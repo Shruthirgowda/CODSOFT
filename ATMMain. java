@@ -1,0 +1,103 @@
+package com.codsoft;
+
+import java.util.Scanner;
+
+
+class BankAccount
+{
+    private double balance = 0;
+    private static final double MAX_BALANCE = 500000;
+    private static final double MAX_WITHDRAW = 100000;
+
+    public void deposit(double amount) {
+        if (amount <= 0)
+        {
+            System.out.println("Invalid deposit amount");
+        } 
+        else if (balance + amount > MAX_BALANCE) 
+        {
+            System.out.println("Balance limit exceeded (Max ₹500000)");
+        }
+        else 
+        {
+            balance += amount;
+            System.out.println("Amount deposited successfully");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0)
+        {
+            System.out.println("Invalid withdrawal amount");
+        } 
+        else if (amount > MAX_WITHDRAW)
+        {
+            System.out.println("Withdrawal limit exceeded (Max ₹100000)");
+        }
+        else if (amount > balance)
+        {
+            System.out.println("Insufficient balance");
+        } 
+        else 
+        {
+            balance -= amount;
+            System.out.println("Please collect your cash");
+        }
+    }
+
+    public void checkBalance() {
+        System.out.println("Current Balance: ₹" + balance);
+    }
+}
+
+public class ATMMain {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BankAccount account = new BankAccount();
+
+        while (true)
+        {
+            System.out.println("\n===== ATM INTERFACE =====");
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } 
+            catch (Exception e) 
+            {
+                System.out.println("Invalid input");
+                continue;
+            }
+
+            switch (choice) 
+            {
+                case 1:
+                    System.out.print("Enter amount to deposit: ");
+                    account.deposit(Double.parseDouble(sc.nextLine()));
+                    break;
+
+                case 2:
+                    System.out.print("Enter amount to withdraw: ");
+                    account.withdraw(Double.parseDouble(sc.nextLine()));
+                    break;
+
+                case 3:
+                    account.checkBalance();
+                    break;
+
+                case 4:
+                    System.out.println("Thank you for using ATM");
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
+    }
+}
