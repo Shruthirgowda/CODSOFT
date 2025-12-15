@@ -1,0 +1,49 @@
+package com.codsoft;
+
+import java.util.Scanner;
+
+public class StudentGradeCalculator {
+
+	public static void main(String[] args) 
+	{
+		Scanner sc=new Scanner (System.in);
+		System.out.println("Enter the number of subject");
+		int subject=sc.nextInt();
+		float totalMarks=0;
+		for(int i=1;i<=subject;i++)
+		{
+			System.out.println("enter the marks of subject"+i+":");
+			float marks=sc.nextFloat();
+			totalMarks=totalMarks+marks;
+		}
+		float avgPercentage;
+		avgPercentage=totalMarks/subject;
+		System.out.println("\n RESULTS----------");
+		System.out.println("Total Marks="+totalMarks);
+		System.out.println("Average percenatage:"+avgPercentage+"%");
+		String grade;
+		if(avgPercentage>=90)
+		{
+			System.out.println("grade=A+");
+		}
+		else if(avgPercentage>=80)
+		{
+			System.out.println("grade=A");
+		}
+		else if(avgPercentage>=70)
+		{
+			System.out.println("grade=B");
+		}
+		else if(avgPercentage>=60)
+		{
+			System.out.println("grade=C");
+		}
+		else
+		{
+			System.out.println("grade=D");
+		}
+		
+		
+	}
+
+}
