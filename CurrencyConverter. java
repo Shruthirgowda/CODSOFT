@@ -1,0 +1,76 @@
+package com.codsoft;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+public class CurrencyConverter
+{
+    public static double getExchangeRate(String base, String target) throws Exception
+    {
+        String apiURL = "https://api.exchangerate-api.com/v4/latest/" + base;
+
+        URL url = new URL(apiURL);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+
+        StringBuilder response = new StringBuilder();
+        String line;
+
+        while ((line = br.readLine()) != null)
+        {
+            response.append(line);
+        }
+
+        br.close();
+
+        String search = "\"" + target + "\":";
+        int index = response.indexOf(search);
+
+        if (index == -1)
+        {
+            throw new Exception("Currency not found");
+        }
+
+        int start = index + search.length();
+        int end = response.indexOf(",", start);
+
+        return Double.parseDouble(response.substring(start, end));
+    }
+
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        try
+        {
+            System.out.print("Enter base currency (USD, INR, EUR): ");
+            String base = sc.next().toUpperCase();
+
+            System.out.print("Enter target currency (USD, INR, EUR): ");
+            String target = sc.next().toUpperCase();
+
+            System.out.print("Enter amount: ");
+            double amount = sc.nextDouble();
+
+            double rate = getExchangeRate(base, target);
+            double convertedAmount = amount * rate;
+
+            String symbol = target.equals("INR") ? "₹" :
+                            target.equals("USD") ? "$" :
+                            target.equals("EUR") ? "€" : "";
+
+            System.out.println("Converted Amount: " + symbol + convertedAmount + " (" + target + ")");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        sc.close();
+    }
+}
